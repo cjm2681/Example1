@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/db_codingrecipe?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: user_codingrecipe
-    password: 1234
+    password: your_password
   thymeleaf:
     cache: false
 
@@ -19,3 +19,6 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+
+  file:
+    upload-dir: /path/to/your/local/folder/

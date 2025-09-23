@@ -7,6 +7,7 @@ import com.codingrecipe.board_spring_boot.repository.BoardFileRepository;
 import com.codingrecipe.board_spring_boot.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,9 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardFileRepository boardFileRepository;
 
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
     public void save(BoardDTO boardDTO) throws IOException {
         //파일 첨부 여부에 따라 로직 분리
         if(boardDTO.getBoardFile().isEmpty()){
@@ -54,7 +58,7 @@ public class BoardService {
             MultipartFile boardFile = boardDTO.getBoardFile();  //  1.
             String originalFilename = boardFile.getOriginalFilename();//  2.
             String storedFileName = System.currentTimeMillis() + "_" + originalFilename;    //  3.
-            String savePath = "C:/Users/gaudi/IdeaProjects/board_spring_boot/img/" + storedFileName; //  4.
+            String savePath = uploadDir + storedFileName; //  4.
             boardFile.transferTo(new File(savePath));       //  5.
 
             BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
