@@ -71,7 +71,8 @@ public class BoardService {
 
 
     }
-
+    //여기도 부모에서 자식으로 접근
+    @Transactional
     public List<BoardDTO> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
         List<BoardDTO> boardDTOList = new ArrayList<>();
@@ -87,11 +88,13 @@ public class BoardService {
         boardRepository.updateHits(id);
     }
 
+    //부모엔티티에서 자식엔티티로 접근할때는 트랜잭션널 붙이기
+    @Transactional
     public BoardDTO findById(Long id) {
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
         if(optionalBoardEntity.isPresent()){
             BoardEntity boardEntity = optionalBoardEntity.get();
-            BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
+            BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity); //toBoardDTO에서 boardEntity(부모)에서 boardFileEntity(자식)으로 접근
             return boardDTO;
         } else {
             return null;
